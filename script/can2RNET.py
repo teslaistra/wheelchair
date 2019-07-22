@@ -44,21 +44,17 @@ def build_frame(canstr):
         print('build_frame: missing #')
         return 'Err!'
     cansplit = canstr.split('#')
-    lcanid = len(cansplit[0])
-    RTR = '#R' in canstr
-
     len_datstr = len(cansplit[1])
-    if not RTR and len_datstr <= 16 and not len_datstr & 1:
+    if len_datstr <= 16 and not len_datstr & 1:
         candat = binascii.unhexlify(cansplit[1])
-        #candat = candat.ljust(8, b'\x00')
-    elif not len_datstr or RTR:
+    elif not len_datstr:
         candat = ''
     else:
-        print ('build_frame: cansend data format error: ' + canstr)
+        print('build_frame: cansend data format error: ' + canstr)
         return 'Err!'
     return map(ord, candat)
 
-def dissect_frame(frame):
+def dissect_frame(frame): #won't work
     # CAN frame packing/unpacking (see `struct can_frame` in <linux/can.h>)
     can_frame_fmt = "<IB3x8s"
     can_id, can_dlc, data = struct.unpack(can_frame_fmt, frame)
@@ -74,17 +70,15 @@ def dissect_frame(frame):
     return (can_idtxt + '#'+''.join(["%02X" % x for x in data[:can_dlc]]) + 'R'*rtr)
 
 def cansend(s,cansendtxt):
+
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
+
     if out != 'Err!':
-        print (out)
         c1 = build_frame("#"+cansplit[1])
         c = bytearray(c1)
         msg = can.Message(arbitration_id=int(cansplit[0],16), data=c)
-        print(binascii.hexlify(msg.data))
-        print (msg.arbitration_id)
         s.send(msg)
-
 
 def canrepeat_stop(thread):
     thread._stop = True
@@ -126,7 +120,6 @@ def canwaitRTR(s,canfiltertxt):
     while cancheckint != canidint:
         cf, addr = s.recvfrom(16)
         cancheckint = struct.unpack("I", cf[:4])[0] & mask
-        
     return cf
 
 def opencansocket(busnum):

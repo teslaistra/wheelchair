@@ -14,10 +14,6 @@ from std_msgs.msg import String
 
 debug = False
 
-host = '' #server='192.168.10.55'  client = ''
-port = 13337
-
-
 class X360:
 
     axis_map = []
@@ -132,6 +128,7 @@ class X360:
 
         # Get the device name.
         #buf = bytearray(63)
+
         buf = bytearray([0] * 64)
         ioctl(jsdev, 0x80006a13 + (0x10000 * len(buf)), buf) # JSIOCGNAME(len)
         js_name = buf
@@ -239,78 +236,6 @@ class X360:
                     print('out:' + self.outstr)
             return self.outstr.strip()
 
-    def socketjoyclientthread(self,conn,cansocket,ipsocket):
-        global joyx
-        global joyy
-        print("SocketJoyClientThread started...")
-
-        conn.send('x360(server) -> IP client -> canbus using RNET\n'.encode())
-        timeout = 1
-        priorjoyx = joyx
-        priorjoyy = joyy
-        priorspeedrange = 0
-        speed_range = 0
-        running = True
-        lasttime = time()
-        running = True
-        while running and rnet_threads_running:
-
-            cread, cwrite, cerror = select.select([conn],[],[], timeout)
-            if cread:
-                try:
-                    evbuf = conn.recv(13)
-                    #print(str(evbuf))
-                    if evbuf:
-                        if evbuf[0:2].decode() == 'x:' and evbuf[4:6].decode() == 'y:':
-                            joyx = int(evbuf[2:4],16) & 0xFF
-                            joyy = int(evbuf[6:8],16) & 0xFF
-                        else:
-                            print('Invalid format from socket: '+str(evbuf))
-                            joyx = 0
-                            joyy = 0
-                            #running = False
-
-                        if evbuf[8:10].decode() == 's:':
-                            speed_range=int(evbuf[10:12],16)
-                            if speed_range != priorspeedrange:
-                                print("received SpeedRange: "+str(speed_range))
-                                RNETsetSpeedRange(cansocket,speed_range)
-                                RNETshortBeep(cansocket)
-                                priorspeedrange=speed_range
-                        elif evbuf[8:10].decode() == 'b:':
-                            if evbuf[10:12].decode() == 'h0':
-                                cansend(cansocket,"0C040101#")#horn off
-                            if evbuf[10:12].decode() == 'h1':
-                                RNETplaysong(cansocket)
-                                #cansend(cansocket,"0C040100#")#horn on
-                            if evbuf[10:12].decode() == 'fl':
-                                cansend(cansocket, "0C000404#")
-                            if evbuf[10:12].decode() == 'tl':
-                                cansend(cansocket, "0C000401#")
-                            if evbuf[10:12].decode() == 'tr':
-                                cansend(cansocket, "0C000402#")
-
-
-                        lasttime = time()
-                        sleep(.005)
-                    else:
-                        joyx = 0
-                        joyy = 0
-                        running = False
-                        print('Connection closed')
-                except IOError as e:
-                    print(e)
-                    joyx = 0
-                    joyy = 0
-                    running = False
-
-            if time() - lasttime > timeout:
-                joyx = 0
-                joyy = 0
-                running = False
-
-        print('Timeout on TCP data')
-
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
     l=len(h)
@@ -414,8 +339,6 @@ def callback_for_msg(msg):
 
 
 
-
-
 if __name__ == "__main__":
         node = rospy.init_node('PiNode')
         # topic
@@ -425,16 +348,20 @@ if __name__ == "__main__":
         global cansocket
         cansocket = opencansocket(0)
         if cansocket != '':
-            print (cansocket)
+
+            print(cansocket)
             #init /dev joystick
+
             x360 = X360()
             jsdev = x360.init_joystick()
+
             global joyx
             global joyy
             joyx = 0
             joyy = 0
+
             #joy_id = RNET_JSMerror_exploit(cansocket)
-            joy_id = "02000000"
+            joy_id = "02000000" #works for exact wheelchair, may not work for another
             playsongthread = threading.Thread(target=RNETplaysong,args=(cansocket,))
 
             speed_range = 00
@@ -446,8 +373,8 @@ if __name__ == "__main__":
             playsongthread.start()
 
             watch_and_wait()
+
             cansocket.shutdown()
-            ipsocket.close()
         kill_rnet_threads()
         print("Exiting")
 

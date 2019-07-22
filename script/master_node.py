@@ -23,6 +23,7 @@ maxjoyposition = 100
 class X360:
     axis_map = []
     button_map = []
+
     xthreshold = deadrange * 0x10000 / 128
     ythreshold = deadrange * 0x10000 / 128
 
@@ -127,15 +128,8 @@ class X360:
             print ('No joystick at ' + fn)
             return ('')
 
-        # jsdev = os.open(fn, 'rb', os.O_RDONLY|os.O_NONBLOCK)
-
         # Get the device name.
-        #buf = bytearray(63)
-
-
         buf = array.array('h', [0] * 64)
-        #buf = bytearray([0] * 64)
-
 
         ioctl(jsdev, 0x80006a13 + (0x10000 * len(buf)), buf)  # JSIOCGNAME(len)
         js_name = buf
@@ -203,78 +197,6 @@ class X360:
                         joyy = 0x100 - int(jvalue * maxjoyposition / 128) >> 8 & 0xFF
                     else:
                         joyy = 0
-
-    def socketjoyserverthread(self, jsdev):
-        global joyx
-        global joyy
-        speed_range = 0
-        global joyevent
-        joypacketinterval = .01
-        joyipsocketthread = threading.Thread(target=x360.joyipsocketthread, args=(joypacketinterval,))
-        joyipsocketthread.start()
-        running = True
-        while running and joyipsocketthread.isAlive():
-            try:
-                ev = jsdev.read(8)
-                if len(ev) != 8:
-                    break;
-                jtime, jvalue, jtype, jnumber = struct.unpack('IhBB', ev)
-                if jtype & 0x02:
-                    print(123)
-                    axis = self.axis_map[jnumber]
-                    if (axis == 'x'):
-                        if abs(jvalue) > self.xthreshold:
-                            # joyx = 0x100 + int(jvalue * 100 / 128) >> 8 &0xFF
-                            joyx = jvalue
-                        else:
-                            joyx = 0
-                    elif (axis == 'y'):
-                        if abs(jvalue) > self.ythreshold:
-                            # joyy = 0x100 - int(jvalue * 100 / 128) >> 8 &0xFF
-                            joyy = jvalue
-                        else:
-                            joyy = 0
-
-                elif jtype & 0x01:
-                    # jnumber is a number of button
-                    # javlue is a state of button. val = 1 if pressed, val = 0 if unpressed
-                    if jvalue == 1 and jnumber == 0:
-                        print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-                        print("Pressed button a")
-                        if speed_range > 0:
-                            speed_range -= 25
-                            joyevent = 's:' + dec2hex(speed_range, 2)
-                            print("SpeedRange: " + str(speed_range))
-                    elif jvalue == 1 and jnumber == 1:
-                        print("Pressed button a")
-
-                        print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-
-                        if speed_range < 100:
-                            speed_range += 25
-                            joyevent = 's:' + dec2hex(speed_range, 2)
-                            print("SpeedRange: " + str(speed_range))
-                    elif jvalue == 0 and jnumber == 2:
-                        print("UNPressed button 3")
-                        joyevent = 'b:h0'
-                    elif jvalue == 1 and jnumber == 2:
-                        print("Pressed button 3")
-                        #joyevent = 'b:h1'
-                    elif jvalue == 1 and jnumber == 3:
-                        print("Pressed button 4")
-                    elif jvalue == 0 and jnumber == 3:
-                        print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-                        print("UNPressed button 4")
-                    else:
-                        print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-                print()
-
-
-            except IOError or OSError:
-                print("Joystick read error")
-                joyx = 0
-                joyy = 0
-                running = False
 
     def joyipsocketthread(self, interval, ):
         # now joyevent global speed_range
