@@ -236,7 +236,7 @@ def wait_joystickframe(cansocket,t):
     while frameid[0:3] != '020':
         #just look for joystick frame ID (no extended frame)
         msg = cansocket.recv()
-        frameid = dec2hex(msg.arbitration_id,8)
+        frameid = str(dec2hex(msg.arbitration_id,8))
         if t>time():
              print("JoyFrame wait timed out ")
              return('02000000')
