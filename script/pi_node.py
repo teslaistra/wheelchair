@@ -178,35 +178,6 @@ class X360:
             h= '0'+hex(int(dec))[1:]
         return ('0'*hexlen+h)[l:l+hexlen]
 
-
-    def joyread_thread(self, jsdev):
-        global joyx
-        global joyy
-        global rnet_threads_running
-        while rnet_threads_running:
-            try:
-                evbuf = jsdev.read(8)
-                jtime, jvalue, jtype, jnumber = struct.unpack('IhBB', evbuf)
-                if jtype & 0x02:
-                    axis = self.axis_map[jnumber]
-                    if (axis == 'x'):
-                            if abs(jvalue) > self.xthreshold:
-                                    joyx = 0x100 + int(jvalue * 100 / 128) >> 8 &0xFF
-                            else:
-                                    joyx = 0
-                    elif (axis == 'y'):
-                            if abs(jvalue) > self.ythreshold:
-                                    joyy = 0x100 - int(jvalue * 100 / 128) >> 8 &0xFF
-                            else:
-                                    joyy = 0
-
-            except:
-                print("Error reading joystick")
-                joyx = 0
-                joyy = 0
-                rnet_threads_running=False
-
-
     def get_joy_leftThumbXY(self, jsdev):
             #r, w, e = select.select([ jsdev ], [], [], 0)
             #for jsdev in r:
@@ -263,12 +234,11 @@ def send_joystick_canframe(s,joy_id):
 def wait_joystickframe(cansocket,t):
     frameid = ''
     while frameid[0:3] != '020':  #just look for joystick frame ID (no extended frame)
-        cf, addr = cansocket.recvfrom(16)
-        candump_frame = dissect_frame(cf)
-        frameid = candump_frame.split('#')[0]
+        msg = cansocket.recv()
+        frameid = msg.arbitration_id
         if t>time():
              print("JoyFrame wait timed out ")
-             return('02000100')
+             return('02000000')
     return(frameid)
 
 def induce_JSM_error(cansocket):
@@ -276,8 +246,6 @@ def induce_JSM_error(cansocket):
         cansend(cansocket,'0c000000#')
 
 def RNET_JSMerror_exploit(cansocket):
-        print("Waiting for JSM heartbeat")
-        canwait(cansocket,"03C30F0F:1FFFFFFF")
         t=time()+0.20
         print("Waiting for joy frame")
         joy_id = wait_joystickframe(cansocket,t)
@@ -360,8 +328,8 @@ if __name__ == "__main__":
             joyx = 0
             joyy = 0
 
-            #joy_id = RNET_JSMerror_exploit(cansocket)
-            joy_id = "02000000" #works for exact wheelchair, may not work for another
+            joy_id = RNET_JSMerror_exploit(cansocket)
+            #joy_id = "02000000" #works for exact wheelchair, may not work for another
             playsongthread = threading.Thread(target=RNETplaysong,args=(cansocket,))
 
             speed_range = 00
