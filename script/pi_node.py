@@ -390,7 +390,7 @@ def callback_for_msg(msg):
     global cansocket 
     joyx = int(msg.x, 16) & 0xFF
     joyy = int(msg.y, 16) & 0xFF
-
+    priorspeedrange = 0
 
     if msg.event[0].decode() == 's':
         speed_range = int(msg.event[2:], 16)
