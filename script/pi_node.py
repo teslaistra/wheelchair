@@ -1,4 +1,4 @@
-#!/python
+#!/usr/bin/env python
 # joystick based on: https://www.kernel.org/doc/Documentation/input/joystick-api.txt
 
 import socket, sys, os, struct, array
