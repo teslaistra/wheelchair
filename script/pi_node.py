@@ -233,7 +233,7 @@ def send_joystick_canframe(s,joy_id):
 
 def wait_joystickframe(cansocket,t):
     frameid = ''
-    while StrFrameid[0:3] != '020':
+    while frameid[0:3] != '020':
         #just look for joystick frame ID (no extended frame)
         msg = cansocket.recv()
         frameid = dec2hex(msg.arbitration_id,8)
