@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import socket, sys, os, struct, array
 from time import *
 from fcntl import ioctl
