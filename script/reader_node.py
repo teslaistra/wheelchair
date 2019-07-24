@@ -25,7 +25,7 @@ event_messages = {
 
  '181c0000': 'song',
  '0c180201': 'seen after change mode to angle 1',
- '00000062': 'seen after change mode to angle 2',
+ '00000062': 'chairAngle motor: 40 -running, 00 -stopped',
  '00000060': 'seen after change mode to angle 3',
  '00000061': 'seen after change mode to angle 4',
  '0c180200': 'seen after change mode to angle 5',
