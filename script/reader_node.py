@@ -71,8 +71,8 @@ if __name__ == "__main__":
             msg = bus.recv()
             if drive_control.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
-                Xdata = data[0:2], 16
-                Ydata = data[2:4], 16
+                Xdata = data[0:2]
+                Ydata = data[2:4]
                 text = "Recieved cordinates of Joy: x = "  + str(Xdata) + " y = " + str(Ydata)
                 msg = String()
                 msg.data = text
