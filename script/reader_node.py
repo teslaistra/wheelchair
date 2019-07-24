@@ -46,7 +46,9 @@ event_messages = {
  '00000000': 'seen at power off',
  '00000002': 'seen at power off',
  '0000000c': 'used by JSM to check for canbus connection',
- '00000004': 'seen at power off'
+ '00000004': 'seen at power off',
+ '0c000105': 'motor has stopped',
+ '0c000106': 'motor is decelerating'
 
 }
 def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
