@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 data = binascii.hexlify(msg.data)
                 Xdata = int(data[0:2],16)
                 Ydata = int(data[2:4],16)
-                text = "Recieved cordinates of Joy: x = "  + Xdata + " y = " + Ydata
+                text = "Recieved cordinates of Joy: x = "  + str(Xdata) + " y = " + str(Ydata)
                 msg = String()
                 msg.data = text
                 DrivePublisher.publish(msg)
