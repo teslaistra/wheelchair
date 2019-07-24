@@ -91,6 +91,7 @@ if __name__ == "__main__":
                 PeriodicPublisher.publish(msg)
             else:
                 text = "Unknown Message with ID:" + str(dec2hex(msg.arbitration_id, 8)) + "data: "  + binascii.hexlify(msg.data)
+                msg = String()
                 msg.data = text
                 EventPublisher.publish(msg)
 
