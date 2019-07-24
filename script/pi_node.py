@@ -217,6 +217,7 @@ def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     return ('0'*hexlen+h)[l:l+hexlen]
 
 def send_joystick_canframe(s,joy_id):
+    #packing data from joystick and sending it
         mintime = .01
         nexttime = time() + mintime
         priorjoyx=joyx
@@ -231,7 +232,7 @@ def send_joystick_canframe(s,joy_id):
                 else:
                     nexttime += mintime
 
-def wait_joystickframe(cansocket,t):
+def wait_joystickframe(cansocket,t): # won't work corrcetly, but will return correct frame id
     frameid = ''
     while frameid[0:3] != '020':
         #just look for joystick frame ID (no extended frame)
