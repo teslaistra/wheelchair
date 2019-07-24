@@ -79,13 +79,13 @@ if __name__ == "__main__":
                 DrivePublisher.publish(msg)
             elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
-                text = "Recieved message about/from: " + event_messages.get(str(dec2hex(msg.arbitration_id, 8))) + "with data" 
+                text = "Recieved message about/from: " + event_messages.get(str(dec2hex(msg.arbitration_id, 8))) + "with data"
                 msg= String()
                 msg.data = text
                 EventPublisher.publish(msg)
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
-                text = "Recieved periodic message about/from: " + event_messages.get(str(dec2hex(msg.arbitration_id, 8))) + "with data"
+                text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + "with data"
                 msg = String()
                 msg.data = text
                 PeriodicPublisher.publish(msg)
