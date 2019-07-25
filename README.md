@@ -23,6 +23,7 @@ CanBus:
  
   If you want to add functions for buttons you need to detect what number it has and create two clauses:
     when this button pressed and unpressed.
+    
  2. Pi_node
   This node is a subscriber to topic1, reads data from it and sends to Can it.
   Also it makes another important function. It turns off Joystick on wheelchair using special function RNET_JSMerror_exploit
