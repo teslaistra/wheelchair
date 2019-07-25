@@ -52,19 +52,19 @@ CanBus:
   
   3. Reader_node:
   
-    This node contain three dictionaries: 
+   This node contain three dictionaries: 
       periodic frames dictionary, it contain description of messages, which are send everytime, when wheelchair is active.
       For example its serial number or battarey level. 
       
-      event frames dictionary, it contain description of messages, which are send when something on Control panel pressed,
-      or answers from another parts of wheelchair, like messages of that motors are stopping or stopped. 
+event frames dictionary, it contain description of messages, which are send when something on Control panel pressed,
+or answers from another parts of wheelchair, like messages of that motors are stopping or stopped. 
       
-      drive event dictionary contains message, which is send by Joystick 
+ drive event dictionary contains message, which is send by Joystick 
       
-     For each of those dictionaries node has topic and it publish there what exact message it recieved from bus with data 
+  For each of those dictionaries node has topic and it publish there what exact message it recieved from bus with data 
      and its description
      
-     Not every message is known by dictionary, so which is not know will send to event messages topic. 
+   Not every message is known by dictionary, so which is not know will send to event messages topic. 
      Also not all messages in dictionary have full description and it is written only when it was seen, for example. 
      
       
