@@ -1,15 +1,21 @@
 # wheelchair
 Source project is a https://github.com/redragonx/can2RNET
+
 This package contains 3 nodes: 
+
   pi_node and master_node to control wheelchair via canbus
   and reader_node to read all messages from canbus
+  
 CanBus: 
+
   You should send messsages in to the CanBus in special format FrameID#Data
   Frame ID is a dec number 
   Data is byte array
  
  Nodes:
+ 
  1. Master_node: 
+ 
   This node can read data from Joystick and publish messages to topic1, which has 3 fields x, y, and event. 
   All of them is a string format-fields. 
   Coordinates of Joystick should be send in hex format, where 9d(min) is a -99, and 64(max) is 100. 
@@ -23,7 +29,9 @@ CanBus:
   
   If you want to add functions for buttons you need to detect what number it has and create two clauses:
     when this button pressed and unpressed.
+    
  2. Pi_node 
+ 
   This node is a subscriber to topic1, reads data from it and sends to Can it. 
   Also it makes another important function. It turns off Joystick on wheelchair using special function RNET_JSMerror_exploit
   This function should wait for Can message in bus, which is from Joystick on wheelchair. This message in format 02000M00#XxYy
@@ -42,7 +50,8 @@ CanBus:
   
   In callback function of reading messages from topic you can define what should do when recieved some new event. 
   
-  3. Reader_node: 
+  3. Reader_node:
+  
     This node contain three dictionaries: 
       periodic frames dictionary, it contain description of messages, which are send everytime, when wheelchair is active.
       For example its serial number or battarey level. 
@@ -60,6 +69,7 @@ CanBus:
      
       
 Important notice about ROS: 
+
  if you want to use nodes on two different machines you need to follow this guide: 
   https://razbotics.wordpress.com/2018/01/23/ros-on-multiple-computers-connecting-raspberry-pi-with-pc-over-lan/
 
