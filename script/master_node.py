@@ -241,7 +241,7 @@ class X360:
 
                 elif jtype & 0x01:
                     # jnumber is a number of button
-                    # javlue is a state of button. val = 1 if pressed, val = 0 if unpressed
+                    # jvalue is a state of button. val = 1 if pressed, val = 0 if unpressed
                     if jvalue == 1 and jnumber == 0:
                         print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
                         print("Pressed button a")

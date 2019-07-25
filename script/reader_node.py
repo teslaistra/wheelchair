@@ -61,7 +61,7 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
     return ('0' * hexlen + h)[l:l + hexlen]
 
 if __name__ == "__main__":
-        node = rospy.init_node('PiNode')
+        node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
         EventPublisher = rospy.Publisher("JoyEvents", String, queue_size=0)
         PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
