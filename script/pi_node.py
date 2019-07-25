@@ -323,8 +323,8 @@ if __name__ == "__main__":
             print(cansocket)
             #init /dev joystick
 
-            x360 = X360()
-            jsdev = x360.init_joystick()
+            #x360 = X360()
+            #jsdev = x360.init_joystick()
 
             global joyx
             global joyy
