@@ -211,10 +211,6 @@ class X360:
         speed_range = 0
         global joyevent
         joypacketinterval = .01
-
-        joyROSthread = threading.Thread(target=x360.joyROSthread, args=(joypacketinterval,))
-        joyROSthread.start()
-
         running = True
 
         while running and joyROSthread.isAlive():
@@ -224,7 +220,6 @@ class X360:
                     break;
                 jtime, jvalue, jtype, jnumber = struct.unpack('IhBB', ev)
                 if jtype & 0x02:
-                    print(123)
                     axis = self.axis_map[jnumber]
                     if (axis == 'x'):
                         if abs(jvalue) > self.xthreshold:
@@ -251,9 +246,7 @@ class X360:
                             print("SpeedRange: " + str(speed_range))
                     elif jvalue == 1 and jnumber == 1:
                         print("Pressed button a")
-
                         print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-
                         if speed_range < 100:
                             speed_range += 25
                             joyevent = 's:' + dec2hex(speed_range, 2)
@@ -271,8 +264,6 @@ class X360:
                         print("UNPressed button 4")
                     else:
                         print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
-                print()
-
 
             except IOError or OSError:
                 print("Joystick read error")
@@ -325,11 +316,19 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
     return ('0' * hexlen + h)[l:l + hexlen]
 
 
+def check_usb_gamepad_center():
+    print('waiting for joystick to be centered')
+    global joyx
+    global joyy
+    while (joyy != 0 or joyx != 0):
+        print('joystick not centered')
 
 if __name__ == "__main__":
+
     node = rospy.init_node('ServerNode')
     publisher = rospy.Publisher("topic1", joy, queue_size=0)
     main_running = True
+
     while main_running:
         msg = joy()
         # init /dev joystick
@@ -340,12 +339,14 @@ if __name__ == "__main__":
         global joyevent
         joyx = 0
         joyy = 0
+
         joy_to_ROS_thread = threading.Thread(target=x360.socketjoyserverthread, args=(jsdev,))
         joy_to_ROS_thread.start()
 
+        check_usb_gamepad_center()
+
+        joyROSthread = threading.Thread(target=x360.joyROSthread, args=(joypacketinterval,))
+        joyROSthread.start()
+
         while threading.active_count() > 0:
             sleep(0.1)
-
-
-
-

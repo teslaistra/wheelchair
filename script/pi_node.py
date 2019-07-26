@@ -11,10 +11,6 @@ import rospy
 from wheelchair.msg import joy
 from std_msgs.msg import String
 
-
-debug = False
-
-
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
     l=len(h)
@@ -25,7 +21,7 @@ def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     return ('0'*hexlen+h)[l:l+hexlen]
 
 def send_joystick_canframe(s,joy_id):
-    #packing data from joystick and sending it
+        #packing data from joystick and sending it
         mintime = .01
         nexttime = time() + mintime
         priorjoyx=joyx
@@ -119,9 +115,10 @@ def callback_for_msg(msg):
 
 
 if __name__ == "__main__":
+
         node = rospy.init_node('PiNode')
-        # topic
         subscriber = rospy.Subscriber("/topic1", joy, callback_for_msg)
+
         global rnet_threads_running
         rnet_threads_running = True
         global cansocket
@@ -130,17 +127,12 @@ if __name__ == "__main__":
 
             print(cansocket)
             #init /dev joystick
-
-            #x360 = X360()
-            #jsdev = x360.init_joystick()
-
             global joyx
             global joyy
             joyx = 0
             joyy = 0
 
             joy_id = RNET_JSMerror_exploit(cansocket)
-            #joy_id = "02000000" #works for exact wheelchair, may not work for another
             playsongthread = threading.Thread(target=RNETplaysong,args=(cansocket,))
 
             speed_range = 00
@@ -152,7 +144,6 @@ if __name__ == "__main__":
             playsongthread.start()
 
             watch_and_wait()
-
             cansocket.shutdown()
         kill_rnet_threads()
         print("Exiting")
