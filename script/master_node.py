@@ -291,7 +291,7 @@ class X360:
                     joyxout = 0
                 if joyyout == 1:
                     joyyout = 0
-                print ("x="+dec2hex(joyxout, 2))
+
                 msg.x = dec2hex(joyxout, 2)
                 msg.y = dec2hex(joyyout, 2)
                 msg.event = joyevent
