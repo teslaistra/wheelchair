@@ -78,7 +78,7 @@ def RNETplaysong(cansocket):
 def watch_and_wait():
         while threading.active_count() > 0:
             sleep(0.5)
-            print('X: '+dec2hex(joyx,2)+'\tY: '+dec2hex(joyy,2)+ '\tThreads: '+str(threading.enamurate))
+            print('X: '+dec2hex(joyx,2)+'\tY: '+dec2hex(joyy,2)+ '\tThreads: '+str(threading.enumerate))
 
 def kill_rnet_threads():
     global rnet_threads_running
