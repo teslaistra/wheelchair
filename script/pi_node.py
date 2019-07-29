@@ -103,7 +103,6 @@ def callback_for_msg(msg):
         if msg.event[2:4] == 'h0':
             cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
-            RNETplaysong(cansocket)
             cansend(cansocket,"0C040100#")  #horn on
         if msg.event[2:4] == 'fl':
             cansend(cansocket, "0C000404#")
@@ -117,7 +116,7 @@ def callback_for_msg(msg):
 if __name__ == "__main__":
 
         node = rospy.init_node('PiNode')
-        subscriber = rospy.Subscriber("/topic1", joy, callback_for_msg)
+        subscriber = rospy.Subscriber("/control_node", joy, callback_for_msg)
 
         global rnet_threads_running
         rnet_threads_running = True

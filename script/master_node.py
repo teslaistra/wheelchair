@@ -210,10 +210,9 @@ class X360:
         global joyy
         speed_range = 0
         global joyevent
-        joypacketinterval = .01
         running = True
 
-        while running and joyROSthread.isAlive():
+        while running:
             try:
                 ev = jsdev.read(8)
                 if len(ev) != 8:
@@ -256,7 +255,7 @@ class X360:
                         joyevent = 'b:h0'
                     elif jvalue == 1 and jnumber == 2:
                         print("Pressed button 3")
-                        #joyevent = 'b:h1'
+                        joyevent = 'b:h1'
                     elif jvalue == 1 and jnumber == 3:
                         print("Pressed button 4")
                     elif jvalue == 0 and jnumber == 3:
@@ -280,6 +279,7 @@ class X360:
         filtered_joyx = joyx
         filtered_joyy = joyy
         running = True
+        check_usb_gamepad_center()
         while running:
             nexttime += interval
             try:
@@ -291,6 +291,7 @@ class X360:
                     joyxout = 0
                 if joyyout == 1:
                     joyyout = 0
+                print ("x="+dec2hex(joyxout, 2))
                 msg.x = dec2hex(joyxout, 2)
                 msg.y = dec2hex(joyyout, 2)
                 msg.event = joyevent
@@ -326,7 +327,7 @@ def check_usb_gamepad_center():
 if __name__ == "__main__":
 
     node = rospy.init_node('ServerNode')
-    publisher = rospy.Publisher("topic1", joy, queue_size=0)
+    publisher = rospy.Publisher("/control_node", joy, queue_size=0)
     main_running = True
 
     while main_running:
@@ -345,6 +346,7 @@ if __name__ == "__main__":
 
         check_usb_gamepad_center()
 
+        joypacketinterval = .01
         joyROSthread = threading.Thread(target=x360.joyROSthread, args=(joypacketinterval,))
         joyROSthread.start()
 
