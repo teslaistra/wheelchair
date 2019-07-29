@@ -1,4 +1,4 @@
-
+string description
 string arbitration_id
 bool is_extended_id
 bool is_remote_frame
