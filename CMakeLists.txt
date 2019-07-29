@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   joy.msg
+  canMSG.msg
 )
 
 generate_messages(

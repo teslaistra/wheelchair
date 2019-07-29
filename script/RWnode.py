@@ -11,6 +11,9 @@ import rospy
 from wheelchair.msg import joy
 from std_msgs.msg import String
 from reader_node import periodic_messages, drive_control, event_messages
+from wheelchair.msg import canMSG
+from wheelchair.msg import joy
+
 
 def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
     h = hex(int(dec))[2:]
@@ -100,8 +103,9 @@ def watch_and_wait():
             DrivePublisher.publish(msg)
         elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
             data = binascii.hexlify(msg.data)
-            text = "Recieved message about/from: " + event_messages.get(
-                str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
+
+
+            text = "Recieved message about/from: " + event_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
             msg = String()
             msg.data = text
             EventPublisher.publish(msg)

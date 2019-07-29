@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import numpy
 import socket, sys, os, struct, array
 from time import *
@@ -8,7 +9,9 @@ import threading
 from can2RNET import *
 import rospy
 from std_msgs.msg import String
+from wheelchair.msg import canMSG
 import binascii
+
 periodic_messages = {
 '1c0c0100': 'JSMrx battery power level in % Xx = 0x00 - 0x64 -p',
  '14300100': 'PMtx drive motor current -p',
@@ -18,11 +21,12 @@ periodic_messages = {
  '0000000e': 'serial number',
  '0c140100': 'smth system JSM 2',
 }
+
 drive_control = {
     '02000000': 'JSM frame - drive control '
 }
-event_messages = {
 
+event_messages = {
  '181c0000': 'song',
  '0c180201': '0c180201 seen after change mode to angle 1',
  '00000062': 'chairAngle motor: 40 -running, 00 -stopped',
@@ -49,8 +53,8 @@ event_messages = {
  '00000004': 'seen at power off',
  '0c000105': 'motor has stopped',
  '0c000106': 'motor is decelerating'
-
 }
+
 def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
     h = hex(int(dec))[2:]
     l = len(h)
@@ -60,13 +64,21 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
         h = '0' + hex(int(dec))[1:]
     return ('0' * hexlen + h)[l:l + hexlen]
 
+def can2ROS(CANmsg, publisher, dict):
+
+    ROSmsg = canMSG()
+    ROSmsg.description = dict.get(get(str(dec2hex(msg.arbitration_id, 8))))
+    ROSmsg.data = binascii.hexlify(CANmsg.data)
+    ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
+    publisher.publish(msg)
+
 if __name__ == "__main__":
         node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
         EventPublisher = rospy.Publisher("JoyEvents", String, queue_size=0)
         PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
 
-        # topic
+        #
         global cansocket
         bus = opencansocket(0)
         while not rospy.is_shutdown():
@@ -80,11 +92,7 @@ if __name__ == "__main__":
                 msg.data = text
                 DrivePublisher.publish(msg)
             elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
-                data = binascii.hexlify(msg.data)
-                text = "Recieved message about/from: " + event_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
-                msg= String()
-                msg.data = text
-                EventPublisher.publish(msg)
+                can2ROS(msg,EventPublisher,event_messages)
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
                 text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
@@ -96,5 +104,3 @@ if __name__ == "__main__":
                 msg = String()
                 msg.data = text
                 EventPublisher.publish(msg)
-
-
