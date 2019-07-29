@@ -65,12 +65,12 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
     return ('0' * hexlen + h)[l:l + hexlen]
 
 def can2ROS(CANmsg, publisher, dict):
-
     ROSmsg = canMSG()
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
     ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
     publisher.publish(ROSmsg)
+    print ("published")
 
 if __name__ == "__main__":
         node = rospy.init_node('ReaderNode')
@@ -93,6 +93,7 @@ if __name__ == "__main__":
                 DrivePublisher.publish(msg)
             elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 can2ROS(msg,EventPublisher,event_messages)
+                print ("called")
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
                 text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
