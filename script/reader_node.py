@@ -73,12 +73,12 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg.is_remote_frame = CANmsg.is_remote_frame
     ROSmsg.is_error_frame = CANmsg.is_error_frame
     ROSmsg.channel = CANmsg.channel
-    ROSmsg.dlc = CANmsg.dlc
+    ROSmsg.dlc = str(CANmsg.dlc)
     ROSmsg.is_fd = CANmsg.is_fd
     ROSmsg.bitrate_switch = CANmsg.bitrate_switch
     ROSmsg.error_state_indicator = CANmsg.error_state_indicator
     publisher.publish(ROSmsg)
-    
+
 if __name__ == "__main__":
         node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
