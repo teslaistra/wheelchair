@@ -11,6 +11,7 @@ import rospy
 from std_msgs.msg import String
 from wheelchair.msg import canMSG
 import binascii
+from test_node.srv import *
 
 periodic_messages = {
 '1c0c0100': 'JSMrx battery power level in % Xx = 0x00 - 0x64 -p',
@@ -113,7 +114,7 @@ if __name__ == "__main__":
                 global level
                 level = int(msg.data,16)
                 print (level)
-                
+
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
                 text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
