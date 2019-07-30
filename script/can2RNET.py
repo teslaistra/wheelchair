@@ -23,6 +23,14 @@ FORMAT FOR CANSEND (matches candump -l)
 e.g. 5A1#11.2233.44556677.88 / 123#DEADBEEF / 5AA# / 123##1 / 213##311
      1F334455#1122334455667788 / 123#R for remote transmission request.
 """
+def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
+    h=hex(int(dec))[2:]
+    l=len(h)
+    if h[l-1]=="L":
+        l-=1  #strip the 'L' that python int sticks on
+    if h[l-2]=="x":
+        h= '0'+hex(int(dec))[1:]
+    return ('0'*hexlen+h)[l:l+hexlen]
 
 def build_frame(canstr):
     if not '#' in canstr:
