@@ -81,7 +81,7 @@ def RNETplaysong(cansocket):
 def watch_and_wait():
         while threading.active_count() > 0:
             sleep(0.5)
-            global msg
+            global msg1
 
             print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2) + '\t Event: ' + msg1.event)
 
