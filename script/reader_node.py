@@ -11,7 +11,7 @@ import rospy
 from std_msgs.msg import String
 from wheelchair.msg import canMSG
 import binascii
-from test_node.srv import *
+from wheelchair.srv import *
 
 periodic_messages = {
 '1c0c0100': 'JSMrx battery power level in % Xx = 0x00 - 0x64 -p',
