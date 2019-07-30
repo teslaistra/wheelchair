@@ -79,9 +79,10 @@ def RNETplaysong(cansocket):
         cansend(cansocket,"181C0100#105a205b00000000")
 
 def watch_and_wait():
-        global msg
         while threading.active_count() > 0:
             sleep(0.5)
+            global msg
+
             print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2) + '\t Event: ' + msg.event)
 
 def kill_rnet_threads():
