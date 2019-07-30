@@ -112,7 +112,7 @@ if __name__ == "__main__":
                 print ("called")
             elif str(dec2hex(msg.arbitration_id,8)) == "1c0c0100":
                 global level
-                level = int(msg.data,16)
+                level = int(binascii.hexlify(CANmsg.data),16)
                 print (level)
 
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
