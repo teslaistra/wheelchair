@@ -75,7 +75,7 @@ def canwait(s,canfiltertxt):
     canidint = int(can_idf_split[0],16)
     mask = int(can_idf_split[1],16)
     cancheckint = 0
-    while cancheckint != can_idf_split[0]:
+    while str(cancheckint).upper() != can_idf_split[0]:
         msg = s.recv()
         cancheckint = dec2hex(msg.arbitration_id, 8)
         print (cancheckint + "!=" + can_idf_split[0])
