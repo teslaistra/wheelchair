@@ -7,10 +7,11 @@ from wheelchair.srv import *
 if __name__ == '__main__':
 
     print_service = rospy.ServiceProxy('/Print_service', batLevel)
-    req = PrintRequest()
-    req.message.data = ""
+    request = PrintRequest()
+    request.message.data = ""
 
     while not rospy.is_shutdown():
 
-        res = print_service()
-        print (res)
+        res = print_service(request)
+        print (res.level.data)
+        time.sleep(1)

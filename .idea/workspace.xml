@@ -4,7 +4,6 @@
     <list default="true" id="21ab377a-5209-4660-879f-fb7ef047b45e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script/service_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/script/service_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srv/batLevel.srv" beforeDir="false" afterPath="$PROJECT_DIR$/srv/batLevel.srv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,7 +67,7 @@
       <workItem from="1564395885867" duration="7542000" />
       <workItem from="1564411096018" duration="1496000" />
       <workItem from="1564481887490" duration="3713000" />
-      <workItem from="1564490316620" duration="6620000" />
+      <workItem from="1564490316620" duration="7135000" />
     </task>
     <servers />
   </component>
