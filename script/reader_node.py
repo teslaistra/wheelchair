@@ -79,12 +79,20 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg.error_state_indicator = str(CANmsg.error_state_indicator)
     publisher.publish(ROSmsg)
 
+def check_bat_level():
+    global level
+    res = PrintResponse()
+    res.level.data = level
+    return res
+
+
 if __name__ == "__main__":
         node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
         EventPublisher = rospy.Publisher("JoyEvents", canMSG, queue_size=0)
         PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
 
+        serv_print = rospy.Service('/Print_service', batLevel, check_bat_level)
         #
         global cansocket
         bus = opencansocket(0)
@@ -101,6 +109,11 @@ if __name__ == "__main__":
             elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 can2ROS(msg,EventPublisher,event_messages)
                 print ("called")
+            elif str(dec2hex(msg.arbitration_id,8)) == "1c0c0100":
+                global level
+                level = int(msg.data,16)
+                print (level)
+                
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)
                 text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)

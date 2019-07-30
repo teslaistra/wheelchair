@@ -13,11 +13,16 @@ add_message_files(
   joy.msg
   canMSG.msg
 )
-
+add_service_files(
+  FILES
+  batLevel.srv
+)
 generate_messages(
   DEPENDENCIES
   std_msgs
 )
+
+
 
 catkin_package(
 #  INCLUDE_DIRS include
