@@ -80,7 +80,7 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg.error_state_indicator = str(CANmsg.error_state_indicator)
     publisher.publish(ROSmsg)
 
-def check_bat_level():
+def check_bat_level(req):
     global level
     res = PrintResponse()
     res.level.data = level
