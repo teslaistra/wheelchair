@@ -53,7 +53,6 @@ def induce_JSM_error(cansocket):
         cansend(cansocket,'0c000000#')
 
 def RNET_JSMerror_exploit(cansocket):
-
         print("Waiting for JSM heartbeat")
         canwait(cansocket, "03C30F0F:1FFFFFFF")
         t=time()+0.20
@@ -81,9 +80,7 @@ def RNETplaysong(cansocket):
 def watch_and_wait():
         while threading.active_count() > 0:
             sleep(0.5)
-            global msg1
-
-            print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2) + '\t Event: ' + msg1.event)
+            print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2))
 
 def kill_rnet_threads():
     global rnet_threads_running
@@ -93,11 +90,9 @@ def callback_for_msg(msg):
     global joyx
     global joyy
     global cansocket
-    global msg1
     joyx = int(msg.x, 16) & 0xFF
     joyy = int(msg.y, 16) & 0xFF
     priorspeedrange = 0
-    msg1 = msg
     if msg.event[0].decode() == 's':
         speed_range = int(msg.event[2:], 16)
         if speed_range != priorspeedrange:
@@ -147,7 +142,7 @@ if __name__ == "__main__":
 
             sendjoyframethread = threading.Thread(target=send_joystick_canframe,args=(cansocket,joy_id,))
             sendjoyframethread.start()
-            playsongthread.start()
+            #playsongthread.start()
 
             watch_and_wait()
             cansocket.shutdown()
