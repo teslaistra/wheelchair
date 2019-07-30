@@ -83,7 +83,7 @@ def watch_and_wait():
             sleep(0.5)
             global msg
 
-            print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2) + '\t Event: ' + msg.event)
+            print('X: ' + dec2hex(joyx,2) + '\tY: '+dec2hex(joyy,2) + '\t Event: ' + msg1.event)
 
 def kill_rnet_threads():
     global rnet_threads_running
@@ -92,11 +92,12 @@ def kill_rnet_threads():
 def callback_for_msg(msg):
     global joyx
     global joyy
-    global cansocket 
+    global cansocket
+    global msg1
     joyx = int(msg.x, 16) & 0xFF
     joyy = int(msg.y, 16) & 0xFF
     priorspeedrange = 0
-
+    msg1 = msg
     if msg.event[0].decode() == 's':
         speed_range = int(msg.event[2:], 16)
         if speed_range != priorspeedrange:
