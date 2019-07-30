@@ -42,11 +42,41 @@ def build_frame(canstr):
 def dissect_frame(msg):
     return str(dec2hex(msg.arbitration_id, 8)) + "#" + binascii.hexlify(msg.data)
 
+def canrepeat_stop(thread):
+    thread._stop = True
+
+def canrepeatThread(s,cansendtxt,interval):
+    interval /= 1000
+    nexttime = time.time() + interval
+    while not threading.currentThread()._stop:
+        cansend(s,cansendtxt)
+        nexttime += interval
+        if (nexttime > time.time()):
+            time.sleep(nexttime - time.time())
+    print(str(threading.currentThread())+' stopped')
+
+def canrepeat(s,cansendtxt,interval): #interval in ms
+    t = threading.Thread(target=canrepeatThread,args=(s,cansendtxt,interval))
+    t._stop = False #threading.Event()
+    t.start()
+    print('Starting thread: ' + cansendtxt + ' ' +str(interval))
+    return (t)
+
+def canwait(s,canfiltertxt):
+    can_idf_split = canfiltertxt.split(':')
+    canidint = int(can_idf_split[0],16)
+    mask = int(can_idf_split[1],16)
+    cancheckint = 0
+    while cancheckint != canidint:
+        msg = s.recv()
+        cancheckint = dec2hex(msg.arbitration_id, 8)
+    return msg
+
+
 def cansend(s,cansendtxt):
 
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
-
     if out != 'Err!':
         c1 = build_frame("#"+cansplit[1])
         c = bytearray(c1)
