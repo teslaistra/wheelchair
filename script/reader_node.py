@@ -65,7 +65,7 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
         h = '0' + hex(int(dec))[1:]
     return ('0' * hexlen + h)[l:l + hexlen]
 
-def can2ROS(CANmsg, publisher, dict, desc):
+def can2ROS(CANmsg, publisher, dict):
     ROSmsg = canMSG()
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
