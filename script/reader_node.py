@@ -37,8 +37,8 @@ event_messages = {
  '0c180101': '0c180101 seen after change mode to drive 6',
  '0c180100': '0c180100 seen after change mode to drive 7',
  '0c000003': 'Blinking button(on the left of panel)',
- '181c0200': 'song',
- '1c240001': 'Device is ready. UI is active.',
+# '181c0200': 'song',
+# '1c240001': 'Device is ready. UI is active.',
  '0c000200': 'unknown',
  '0c000004': 'Lightning Button',
  '0c040000': 'horn on',
@@ -88,15 +88,19 @@ def check_bat_level(req):
 
 
 if __name__ == "__main__":
+
         node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
         EventPublisher = rospy.Publisher("JoyEvents", canMSG, queue_size=0)
         PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", canMSG, queue_size=0)
 
         serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
-        #
+        print ('services and nodes turned on')
+
         global cansocket
         bus = opencansocket(0)
+
+        print ("starting reading messages")
         while not rospy.is_shutdown():
             msg = bus.recv()
             if drive_control.get(str(dec2hex(msg.arbitration_id, 8))) != None:

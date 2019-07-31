@@ -118,14 +118,13 @@ if __name__ == "__main__":
 
         node = rospy.init_node('PiNode')
         subscriber = rospy.Subscriber("/control_node", joy, callback_for_msg)
+        print ("node turned on")
 
         global rnet_threads_running
         rnet_threads_running = True
         global cansocket
         cansocket = opencansocket(0)
         if cansocket != '':
-
-            print(cansocket)
 
             #init /dev joystick
             global joyx
