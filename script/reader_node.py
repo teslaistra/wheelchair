@@ -82,7 +82,7 @@ def can2ROS(CANmsg, publisher, dict):
 
 def check_bat_level(req):
     global level
-    res = PrintResponse()
+    res = batLevelResponse()
     res.level.data = level
     return res
 
