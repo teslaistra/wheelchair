@@ -14,7 +14,6 @@ import binascii
 from wheelchair.srv import *
 
 periodic_messages = {
-'1c0c0100': 'JSMrx battery power level in % Xx = 0x00 - 0x64 -p',
  '14300100': 'PMtx drive motor current -p',
  '03c30f0f': 'JSMtx device heartbeat -p',
  '0c140200': 'smth system JSM 1',
@@ -27,6 +26,7 @@ drive_control = {
     '02000000': 'JSM frame - drive control '
 }
 
+#description in comments are from dictionary
 event_messages = {
  '181c0000': 'song',
  '0c180201': '0c180201 seen after change mode to angle 1',
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         EventPublisher = rospy.Publisher("JoyEvents", canMSG, queue_size=0)
         PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
 
-        serv_print = rospy.Service('/Print_service', batLevel, check_bat_level)
+        serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
         #
         global cansocket
         bus = opencansocket(0)
@@ -113,7 +113,6 @@ if __name__ == "__main__":
             elif str(dec2hex(msg.arbitration_id,8)) == "1c0c0100":
                 global level
                 level = int(binascii.hexlify(msg.data),16)
-                print (level)
 
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 data = binascii.hexlify(msg.data)

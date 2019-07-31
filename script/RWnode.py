@@ -42,7 +42,7 @@ def send_joystick_canframe(s, joy_id):
             nexttime += mintime
 
 
-def wait_joystickframe(cansocket, t):  # won't work corrcetly, but will return correct frame id
+def wait_joystickframe(cansocket, t):
     frameid = ''
     while frameid[0:3] != '020':
         # just look for joystick frame ID (no extended frame)
@@ -116,6 +116,10 @@ def watch_and_wait():
             msg = String()
             msg.data = text
             PeriodicPublisher.publish(msg)
+        elif str(dec2hex(msg.arbitration_id, 8)) == "1c0c0100":
+            global level
+            level = int(binascii.hexlify(msg.data), 16)
+            print (level)
         else:
             text = "Unknown Message with ID: " + str(dec2hex(msg.arbitration_id, 8)) + " data: " + binascii.hexlify(
                 msg.data)
@@ -161,6 +165,11 @@ def callback_for_msg(msg):
         if msg.event[2:4] == 'tr':
             cansend(cansocket, "0C000402#")
 
+def check_bat_level(req):
+    global level
+    res = batLevelResponse()
+    res.level.data = level
+    return res
 
 if __name__ == "__main__":
 
@@ -171,6 +180,8 @@ if __name__ == "__main__":
     DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
     EventPublisher = rospy.Publisher("JoyEvents", String, queue_size=0)
     PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
+
+    serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
 
     global rnet_threads_running
     rnet_threads_running = True
