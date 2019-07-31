@@ -109,17 +109,11 @@ if __name__ == "__main__":
                 DrivePublisher.publish(msg)
             elif event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 can2ROS(msg,EventPublisher,event_messages)
-                print ("called")
             elif str(dec2hex(msg.arbitration_id,8)) == "1c0c0100":
                 global level
                 level = int(binascii.hexlify(msg.data),16)
-
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
-                data = binascii.hexlify(msg.data)
-                text = "Recieved periodic message about/from: " + periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) + " with data " + binascii.hexlify(msg.data)
-                msg = String()
-                msg.data = text
-                PeriodicPublisher.publish(msg)
+                can2ROS(msg,PeriodicPublisher,periodic_messages)
             else:
                 text = "Unknown Message with ID: " + str(dec2hex(msg.arbitration_id, 8)) + " data: "  + binascii.hexlify(msg.data)
                 msg = String()
