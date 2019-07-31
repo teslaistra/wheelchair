@@ -95,5 +95,5 @@ def cansend(s,cansendtxt):
 def opencansocket(busnum):
     busnum='can'+str(busnum)
     bus = can.interface.Bus(channel = busnum, bustype='socketcan')
-    print ("connected to CAN"+busnum)
+    print ("connected to "+busnum)
     return bus
