@@ -121,6 +121,6 @@ if __name__ == "__main__":
             else:
                 text = "Unknown Message with ID: " + str(dec2hex(msg.arbitration_id, 8)) + " data: "  + binascii.hexlify(msg.data)
                 ROSmsg = canMSG()
-                ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
-                ROSmsg.data = binascii.hexlify(CANmsg.data)
+                ROSmsg.description = text
+                ROSmsg.data = binascii.hexlify(msg.data)
                 EventPublisher.publish(ROSmsg)
