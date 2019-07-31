@@ -65,7 +65,7 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
         h = '0' + hex(int(dec))[1:]
     return ('0' * hexlen + h)[l:l + hexlen]
 
-def can2ROS(CANmsg, publisher, dict):
+def can2ROS(CANmsg, publisher, dict, desc):
     ROSmsg = canMSG()
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
@@ -120,6 +120,7 @@ if __name__ == "__main__":
                 can2ROS(msg,PeriodicPublisher,periodic_messages)
             else:
                 text = "Unknown Message with ID: " + str(dec2hex(msg.arbitration_id, 8)) + " data: "  + binascii.hexlify(msg.data)
-                msg = String()
-                msg.data = text
-                EventPublisher.publish(msg)
+                ROSmsg = canMSG()
+                ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
+                ROSmsg.data = binascii.hexlify(CANmsg.data)
+                EventPublisher.publish(ROSmsg)
