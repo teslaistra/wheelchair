@@ -11,7 +11,7 @@ if __name__ == '__main__':
     request.message.data = ""
 
     while not rospy.is_shutdown():
-
+        ##
         res = print_service(request)
         print (res.level.data)
         time.sleep(1)
