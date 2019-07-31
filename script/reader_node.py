@@ -91,7 +91,7 @@ if __name__ == "__main__":
         node = rospy.init_node('ReaderNode')
         DrivePublisher = rospy.Publisher("JoyXY", String, queue_size=0)
         EventPublisher = rospy.Publisher("JoyEvents", canMSG, queue_size=0)
-        PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", String, queue_size=0)
+        PeriodicPublisher = rospy.Publisher("PeriodicsMsgs", canMSG, queue_size=0)
 
         serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
         #
