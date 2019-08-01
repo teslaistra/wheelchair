@@ -104,7 +104,8 @@ def callback_for_msg(msg):
         if msg.event[2:4] == 'h0':
             cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
-            cansend(cansocket,"0C040100#")  #horn on
+            cansendArr(cansocket)
+            #cansend(cansocket,"0C040100#")  #horn on
         if msg.event[2:4] == 'fl':
             cansend(cansocket, "0C000404#")
         if msg.event[2:4] == 'tl':

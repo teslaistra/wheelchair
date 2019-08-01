@@ -24,6 +24,8 @@ FORMAT FOR CANSEND (matches candump -l)
 e.g. 5A1#11.2233.44556677.88 / 123#DEADBEEF / 5AA# / 123##1 / 213##311
      1F334455#1122334455667788 / 123#R for remote transmission request.
 """
+
+
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
     l=len(h)
@@ -63,6 +65,12 @@ def canrepeatThread(s,cansendtxt,interval):
         if (nexttime > time.time()):
             time.sleep(nexttime - time.time())
     print(str(threading.currentThread())+' stopped')
+
+def cansendArr(bus, arr, interval = 0.005):
+    for msg in arr:
+        cansend(bus,msg)
+        sleep(interval)
+
 
 def canrepeat(s,cansendtxt,interval): #interval in ms
     t = threading.Thread(target=canrepeatThread,args=(s,cansendtxt,interval))
