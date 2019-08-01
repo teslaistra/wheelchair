@@ -12,6 +12,7 @@ from MessageArray import change_mode
 import json
 from decimal import Decimal
 
+import pickle
 
 event_messages = {
  '181c0000': 'song',
@@ -67,7 +68,9 @@ for msg in a:
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
 
 d = {'array' : a}
-print json.dumps(d, ensure_ascii=False)
+pickle_out = open("dict.pickle","wb")
+pickle.dump(d, pickle_out)
+pickle_out.close()
 print("press any key to send arr1")
 b = raw_input()
 
