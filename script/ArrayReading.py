@@ -54,7 +54,7 @@ while flag:
 
 
 print("press any key to send arr")
-b = input()
+b = raw_input()
 
 for msg in a:
     sleep(0.005)
