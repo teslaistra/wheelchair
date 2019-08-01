@@ -7,6 +7,8 @@ import select
 import threading
 from can2RNET import *
 import binascii
+from MessageArray import change_mode
+
 event_messages = {
  '181c0000': 'song',
  '0c180201': '0c180201 seen after change mode to angle 1',
@@ -39,7 +41,7 @@ event_messages = {
 bus = opencansocket(0)
 
 flag= True
-time1 = time() + 10
+time1 = time() + 3
 a = []
 print ("starting reading messages")
 while flag:
@@ -56,8 +58,9 @@ while flag:
 print("press any key to send arr")
 b = raw_input()
 
-for msg in a:
+for msg in change_mode:
     sleep(0.005)
-    bus.send(msg)
+    cansend(bus, msg)
+    #bus.send(msg)
 for msg in a:
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
