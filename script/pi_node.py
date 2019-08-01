@@ -10,6 +10,7 @@ from can2RNET import *
 import rospy
 from wheelchair.msg import joy
 from std_msgs.msg import String
+import MessageArray
 
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
@@ -104,7 +105,7 @@ def callback_for_msg(msg):
         if msg.event[2:4] == 'h0':
             cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
-            cansendArr(cansocket)
+            cansendArr(cansocket, change_mode)
             #cansend(cansocket,"0C040100#")  #horn on
         if msg.event[2:4] == 'fl':
             cansend(cansocket, "0C000404#")
