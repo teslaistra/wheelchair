@@ -6,9 +6,7 @@ from fcntl import ioctl
 import select
 import threading
 from can2RNET import *
-import rospy
-from std_msgs.msg import String
-from wheelchair.msg import canMSG
+
 import binascii
 from reader_node import periodic_messages, drive_control, event_messages, dec2hex
 from pi_node import induce_JSM_error
