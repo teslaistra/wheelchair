@@ -87,7 +87,6 @@ def canwait(s,canfiltertxt):
     while str(cancheckint).upper() != can_idf_split[0]:
         msg = s.recv()
         cancheckint = dec2hex(msg.arbitration_id, 8)
-        print (cancheckint + "!=" + can_idf_split[0])
     return msg
 
 

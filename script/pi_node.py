@@ -10,7 +10,7 @@ from can2RNET import *
 import rospy
 from wheelchair.msg import joy
 from std_msgs.msg import String
-import MessageArray
+from MessageArray import *
 
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
