@@ -1,16 +1,17 @@
 #!/usr/bin/env python
+import array
+import os
 import rospy
 import socket
-import sys
-import os
 import struct
-import array
+import sys
 import threading
-from time import *
 from fcntl import ioctl
-from can2RNET import *
 from std_msgs.msg import String
+from time import *
 from wheelchair.msg import joy
+
+from can2RNET import *
 
 debug = False
 msg = String()

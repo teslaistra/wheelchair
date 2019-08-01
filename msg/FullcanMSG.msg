@@ -1,0 +1,11 @@
+string description
+string arbitration_id
+bool is_extended_id
+bool is_remote_frame
+bool is_error_frame
+string channel
+string dlc
+string data
+bool is_fd
+string bitrate_switch
+string error_state_indicator

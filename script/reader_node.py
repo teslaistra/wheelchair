@@ -37,8 +37,8 @@ event_messages = {
  '0c180101': '0c180101 seen after change mode to drive 6',
  '0c180100': '0c180100 seen after change mode to drive 7',
  '0c000003': 'Blinking button(on the left of panel)',
-# '181c0200': 'song',
-# '1c240001': 'Device is ready. UI is active.',
+ '181c0200': 'song',
+ '1c240001': 'Device is ready. UI is active.',
  '0c000200': 'unknown',
  '0c000004': 'Lightning Button',
  '0c040000': 'horn on',
@@ -69,6 +69,12 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg = canMSG()
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
+    publisher.publish(ROSmsg)
+
+def Fullcan2ROS(CANmsg, publisher, dict):
+    ROSmsg = FullcanMSG()
+    ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
+    ROSmsg.data = binascii.hexlify(CANmsg.data)
     ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
     ROSmsg.is_extended_id = CANmsg.is_extended_id
     ROSmsg.is_remote_frame = CANmsg.is_remote_frame
@@ -96,9 +102,8 @@ if __name__ == "__main__":
 
         serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
         print ('services and nodes turned on')
-
-        global cansocket
         bus = opencansocket(0)
+
 
         print ("starting reading messages")
         while not rospy.is_shutdown():

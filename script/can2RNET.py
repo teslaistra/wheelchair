@@ -2,14 +2,15 @@
 
 #Python2 canbus functions
 
+import array
+import binascii
+import can
 import socket
 import struct
 import sys
-from time import *
-import binascii
 import threading
-import can
-import array
+from time import *
+
 #all functions take CAN messages as a string in "CANSEND" (from can-utils) format
 """
 FORMAT FOR CANSEND (matches candump -l)

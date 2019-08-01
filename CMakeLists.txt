@@ -12,6 +12,7 @@ add_message_files(
   FILES
   joy.msg
   canMSG.msg
+  FullcanMSG.msg
 )
 add_service_files(
   FILES
