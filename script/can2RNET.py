@@ -100,6 +100,7 @@ def cansend(s,cansendtxt):
         c = bytearray(c1)
         msg = can.Message(arbitration_id=int(cansplit[0],16), data=c)
         s.send(msg)
+        print(msg.is_extended_id)
 
 def opencansocket(busnum):
     busnum='can'+str(busnum)

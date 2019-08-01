@@ -67,10 +67,7 @@ for msg in a:
     bus.send(msg)
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
 
-d = {'array' : a}
-pickle_out = open("dict.pickle","wb")
-pickle.dump(d, pickle_out)
-pickle_out.close()
+
 print("press any key to send arr1")
 b = raw_input()
 
