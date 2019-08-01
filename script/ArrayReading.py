@@ -59,7 +59,5 @@ b = raw_input()
 for msg in a:
     sleep(0.005)
     bus.send(msg)
-i = 0
 for msg in a:
-    print("message " + str(i))
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
