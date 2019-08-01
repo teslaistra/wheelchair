@@ -45,7 +45,7 @@ print ("starting reading messages")
 while flag:
     msg = bus.recv()
     if event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
-        if a.lenght < 10:
+        if len(a) < 10:
             a.append(msg)
     if time1 < time():
         flag = False
