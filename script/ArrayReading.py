@@ -62,6 +62,7 @@ for msg in a:
     bus.send(msg)
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
 print("press any key to send arr1")
+c = raw_input()
 
 for msg in change_mode:
     sleep(0.005)
