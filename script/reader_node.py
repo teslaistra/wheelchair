@@ -69,12 +69,6 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg = canMSG()
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
-    publisher.publish(ROSmsg)
-
-def Fullcan2ROS(CANmsg, publisher, dict):
-    ROSmsg = FullcanMSG()
-    ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
-    ROSmsg.data = binascii.hexlify(CANmsg.data)
     ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
     ROSmsg.is_extended_id = CANmsg.is_extended_id
     ROSmsg.is_remote_frame = CANmsg.is_remote_frame
@@ -86,6 +80,8 @@ def Fullcan2ROS(CANmsg, publisher, dict):
     ROSmsg.error_state_indicator = str(CANmsg.error_state_indicator)
     publisher.publish(ROSmsg)
 
+def Fullcan2ROS():
+    a =1
 def check_bat_level(req):
     global level
     res = batLevelResponse()
@@ -102,8 +98,9 @@ if __name__ == "__main__":
 
         serv_print = rospy.Service('/Print_level_service', batLevel, check_bat_level)
         print ('services and nodes turned on')
-        bus = opencansocket(0)
 
+        global cansocket
+        bus = opencansocket(0)
 
         print ("starting reading messages")
         while not rospy.is_shutdown():
