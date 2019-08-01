@@ -48,8 +48,10 @@ while flag:
         if a.lenght < 10:
             a.append(msg)
     if time1 < time():
-        print (time1-time())
         flag = False
+    else:
+        print (time1-time())
+
 
 print("press any key to send arr")
 b = input()
