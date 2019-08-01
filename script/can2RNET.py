@@ -94,10 +94,13 @@ def cansend(s,cansendtxt):
 
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
+    flag = False
     if out != 'Err!':
+        if cansendtxt[1] == "c":
+            flag = True
         c1 = build_frame("#"+cansplit[1])
         c = bytearray(c1)
-        msg = can.Message(arbitration_id=int(cansplit[0],16), data=c)
+        msg = can.Message(arbitration_id=int(cansplit[0],16), data=c, is_extended_id = flag)
         s.send(msg)
 
 def opencansocket(busnum):
