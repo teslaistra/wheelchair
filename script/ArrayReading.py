@@ -9,6 +9,10 @@ from can2RNET import *
 import binascii
 from MessageArray import change_mode
 
+import json
+from decimal import Decimal
+
+
 event_messages = {
  '181c0000': 'song',
  '0c180201': '0c180201 seen after change mode to angle 1',
@@ -61,6 +65,9 @@ for msg in a:
     sleep(0.005)
     bus.send(msg)
     print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
+
+d = {'array' : a}
+print json.dumps(d, ensure_ascii=False)
 print("press any key to send arr1")
 b = raw_input()
 
