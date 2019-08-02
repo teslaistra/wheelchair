@@ -58,7 +58,7 @@ def readMsgs(bus,array):
     while flag:
         msg = bus.recv()
         if event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
-            if len(array) < 21:
+            if len(arrayk) < 21:
                 array.append(msg)
         if time1 < time():
             flag = False
