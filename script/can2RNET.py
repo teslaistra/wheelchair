@@ -68,7 +68,11 @@ def canrepeatThread(s,cansendtxt,interval):
 
 def cansendArr(bus, arr, interval = 0.005):
     for msg in arr:
-        cansend(bus,msg)
+        splitMsg = msg.split(":")
+        if splitMsg[0] == "T":
+            flag = True
+        else: flag = False
+        cansend(bus,splitMsg[1],flag)
 
 
 def canrepeat(s,cansendtxt,interval): #interval in ms
@@ -89,14 +93,14 @@ def canwait(s,canfiltertxt):
     return msg
 
 
-def cansend(s,cansendtxt):
+def cansend(s,cansendtxt, is_extendedId = True):
 
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
     if out != 'Err!':
         c1 = build_frame("#"+cansplit[1])
         c = bytearray(c1)
-        msg = can.Message(arbitration_id=int(cansplit[0],16), data=c)
+        msg = can.Message(arbitration_id=int(cansplit[0],16), data=c, is_extended_id = is_extendedId)
         s.send(msg)
         print(msg.is_extended_id)
 
