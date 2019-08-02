@@ -69,7 +69,6 @@ def canrepeatThread(s,cansendtxt,interval):
 def cansendArr(bus, arr, interval = 0.005):
     for msg in arr:
         cansend(bus,msg)
-        sleep(interval)
 
 
 def canrepeat(s,cansendtxt,interval): #interval in ms
