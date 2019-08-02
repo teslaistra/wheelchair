@@ -70,6 +70,7 @@ def cansendArr(bus, arr, interval = 0.005):
         splitMsg = msg.split(":")
         if splitMsg[0] == "T": flag = True
         else: flag = False
+        sleep(interval)
         cansend(bus,splitMsg[1],flag)
 
 
