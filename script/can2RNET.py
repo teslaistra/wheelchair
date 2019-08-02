@@ -25,7 +25,6 @@ e.g. 5A1#11.2233.44556677.88 / 123#DEADBEEF / 5AA# / 123##1 / 213##311
      1F334455#1122334455667788 / 123#R for remote transmission request.
 """
 
-
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
     l=len(h)
@@ -69,8 +68,7 @@ def canrepeatThread(s,cansendtxt,interval):
 def cansendArr(bus, arr, interval = 0.005):
     for msg in arr:
         splitMsg = msg.split(":")
-        if splitMsg[0] == "T":
-            flag = True
+        if splitMsg[0] == "T": flag = True
         else: flag = False
         cansend(bus,splitMsg[1],flag)
 
@@ -92,9 +90,7 @@ def canwait(s,canfiltertxt):
         cancheckint = dec2hex(msg.arbitration_id, 8)
     return msg
 
-
 def cansend(s,cansendtxt, is_extendedId = True):
-
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
     if out != 'Err!':
@@ -102,7 +98,6 @@ def cansend(s,cansendtxt, is_extendedId = True):
         c = bytearray(c1)
         msg = can.Message(arbitration_id=int(cansplit[0],16), data=c, is_extended_id = is_extendedId)
         s.send(msg)
-        print(msg.is_extended_id)
 
 def opencansocket(busnum):
     busnum='can'+str(busnum)

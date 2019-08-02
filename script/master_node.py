@@ -259,9 +259,10 @@ class X360:
                         joyevent = 'b:h1'
                     elif jvalue == 1 and jnumber == 3:
                         print("Pressed button 4")
+                        joyevent = 'b:h2'
                     elif jvalue == 0 and jnumber == 3:
-                        print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
                         print("UNPressed button 4")
+                        joyevent = 'b:h3'
                     else:
                         print("VAL:" + str(jvalue) + "  " + "NUM:" + str(jnumber))
 

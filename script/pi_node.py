@@ -10,7 +10,7 @@ from can2RNET import *
 import rospy
 from wheelchair.msg import joy
 from std_msgs.msg import String
-from MessageArray import change_mode
+from MessageArray import change_mode, change_mode_back
 
 def dec2hex(dec,hexlen):  #convert dec to hex with leading 0s and no '0x'
     h=hex(int(dec))[2:]
@@ -103,16 +103,13 @@ def callback_for_msg(msg):
             priorspeedrange = speed_range
     elif msg.event[0] == 'b':
         if msg.event[2:4] == 'h0':
-            cansend(cansocket, "0C040101#")  #horn off
+            print ()
+            #cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
             cansendArr(cansocket, change_mode)
             #cansend(cansocket,"0C040100#")  #horn on
-        if msg.event[2:4] == 'make horn':
-            cansend(cansocket, "0C000404#")
-        if msg.event[2:4] == 'tl':
-            cansend(cansocket, "0C000401#")
-        if msg.event[2:4] == 'tr':
-            cansend(cansocket, "0C000402#")
+        if msg.event[2:4] == 'h2':
+            cansendArr(cansocket, change_mode_back)
 
 
 
