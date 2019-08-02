@@ -92,7 +92,6 @@ def callback_for_msg(msg):
     global joyy
     global cansocket
     global IsMode
-    IsMode = True
     joyx = int(msg.x, 16) & 0xFF
     joyy = int(msg.y, 16) & 0xFF
     priorspeedrange = 0
@@ -114,7 +113,6 @@ def callback_for_msg(msg):
                 IsMode = False
             else:
                 print ("drive mode")
-
                 cansendArr(cansocket, change_mode_back)
                 IsMode = True
 
@@ -141,6 +139,9 @@ if __name__ == "__main__":
             global joyy
             joyx = 0
             joyy = 0
+
+            global IsMode
+            IsMode = True
 
             joy_id = RNET_JSMerror_exploit(cansocket)
             playsongthread = threading.Thread(target=RNETplaysong,args=(cansocket,))
