@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="21ab377a-5209-4660-879f-fb7ef047b45e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script/ArrayReading.py" beforeDir="false" afterPath="$PROJECT_DIR$/script/ArrayReading.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script/can2RNET.py" beforeDir="false" afterPath="$PROJECT_DIR$/script/can2RNET.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +67,9 @@
       <workItem from="1564411096018" duration="1496000" />
       <workItem from="1564481887490" duration="3713000" />
       <workItem from="1564490316620" duration="16286000" />
-      <workItem from="1564652308941" duration="8020000" />
+      <workItem from="1564652308941" duration="9825000" />
+      <workItem from="1564662770550" duration="6301000" />
+      <workItem from="1564740074106" duration="1444000" />
     </task>
     <servers />
   </component>
