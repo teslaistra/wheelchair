@@ -84,6 +84,10 @@ print("press any key to send arr1")
 b = raw_input()
 sendarr(bus,array2)
 
+def induce_JSM_error(cansocket):
+    for i in range(0,3):
+        cansend(cansocket,'0c000000#')
+induce_JSM_error(bus)
 while True:
     a = str(raw_input())
     if a == "1":
