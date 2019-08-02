@@ -328,7 +328,7 @@ def check_usb_gamepad_center():
 if __name__ == "__main__":
 
     node = rospy.init_node('ServerNode')
-    publisher = rospy.Publisher("/control_node", joy, queue_size=0)
+    publisher = rospy.Publisher("/control_topic", joy, queue_size=0)
     main_running = True
 
     while main_running:

@@ -94,7 +94,6 @@ def cansend(s,cansendtxt):
 
     cansplit = cansendtxt.split('#')
     out=build_frame(cansendtxt)
-    flag = False
     if out != 'Err!':
         c1 = build_frame("#"+cansplit[1])
         c = bytearray(c1)

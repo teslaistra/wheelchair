@@ -45,33 +45,48 @@ event_messages = {
 
 bus = opencansocket(0)
 
-flag= True
-time1 = time() + 3
-a = []
-print ("starting reading messages")
-while flag:
-    msg = bus.recv()
-    if event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
-        if len(a) < 21:
-            a.append(msg)
-    if time1 < time():
-        flag = False
-    else:
-        print (time1-time())
+def sendarr(s, arr):
+    for msg in arr:
+        sleep(0.005)
+        s.send(msg)
+        print(str(dec2hex(msg.arbitration_id, 8)) + "#" + binascii.hexlify(msg.data))
 
+def readMsgs(bus,array):
+    flag = True
+    global event_messages
+    time1 = time() + 5
+    while flag:
+        msg = bus.recv()
+        if event_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
+            if len(a) < 21:
+                array.append(msg)
+        if time1 < time():
+            flag = False
+        else:
+            print (time1 - time())
+
+array1 = []
+print("press any key to start reading first arr")
+b = raw_input()
+print ("starting reading messages in to first array")
+readMsgs(bus,array1)
 
 print("press any key to send arr")
 b = raw_input()
-for msg in a:
-    sleep(0.005)
-    bus.send(msg)
-    print(str(dec2hex(msg.arbitration_id, 8)) +"#"+binascii.hexlify(msg.data))
+sendarr(bus,array1)
 
+print("press any key to start reading second arr")
+b = raw_input()
+array2 = []
+readMsgs(bus, array2)
 
 print("press any key to send arr1")
 b = raw_input()
+sendarr(bus,array2)
 
-for msg in change_mode:
-    sleep(0.005)
-    cansend(bus, msg)
-    print (msg)
+while True:
+    a = str(raw_input())
+    if a == "1":
+        sendarr(bus,array1)
+    elif a == "2":
+        sendarr(bus,array2)

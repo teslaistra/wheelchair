@@ -67,8 +67,12 @@ def dec2hex(dec, hexlen):  # convert dec to hex with leading 0s and no '0x'
 
 def can2ROS(CANmsg, publisher, dict):
     ROSmsg = canMSG()
+    ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
     ROSmsg.description = dict.get(str(dec2hex(CANmsg.arbitration_id, 8)))
     ROSmsg.data = binascii.hexlify(CANmsg.data)
+    publisher.publish(ROSmsg)
+
+def Fullcan2ROS():
     ROSmsg.arbitration_id = str(dec2hex(CANmsg.arbitration_id, 8))
     ROSmsg.is_extended_id = CANmsg.is_extended_id
     ROSmsg.is_remote_frame = CANmsg.is_remote_frame
@@ -78,10 +82,6 @@ def can2ROS(CANmsg, publisher, dict):
     ROSmsg.is_fd = CANmsg.is_fd
     ROSmsg.bitrate_switch = str(CANmsg.bitrate_switch)
     ROSmsg.error_state_indicator = str(CANmsg.error_state_indicator)
-    publisher.publish(ROSmsg)
-
-def Fullcan2ROS():
-    a =1
 def check_bat_level(req):
     global level
     res = batLevelResponse()
@@ -121,8 +121,8 @@ if __name__ == "__main__":
             elif periodic_messages.get(str(dec2hex(msg.arbitration_id, 8))) != None:
                 can2ROS(msg,PeriodicPublisher,periodic_messages)
             else:
-                text = "Unknown Message with ID: " + str(dec2hex(msg.arbitration_id, 8)) + " data: "  + binascii.hexlify(msg.data)
                 ROSmsg = canMSG()
-                ROSmsg.description = text
+                ROSmsg.arbitration_id = str(dec2hex(msg.arbitration_id, 8))
+                ROSmsg.description = "Unknown Message"
                 ROSmsg.data = binascii.hexlify(msg.data)
                 EventPublisher.publish(ROSmsg)
