@@ -1,7 +1,7 @@
 #!/Python2.7
 
 #Python2 canbus functions
-
+#rewritten for Python2 and improved by Daniil Efimov danyefimoff@gmail.com
 import array
 import binascii
 import can
@@ -12,6 +12,7 @@ import threading
 from time import *
 
 #all functions take CAN messages as a string in "CANSEND" (from can-utils) format
+
 """
 FORMAT FOR CANSEND (matches candump -l)
     <can_id>#{R|data}          for CAN 2.0 frames
