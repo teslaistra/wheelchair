@@ -109,9 +109,12 @@ def callback_for_msg(msg):
             #cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
             if IsMode:
+                print ("angle mode")
                 cansendArr(cansocket, change_mode)
                 IsMode = False
             else:
+                print ("drive mode")
+
                 cansendArr(cansocket, change_mode_back)
                 IsMode = True
 
