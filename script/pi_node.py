@@ -91,6 +91,8 @@ def callback_for_msg(msg):
     global joyx
     global joyy
     global cansocket
+    global IsMode
+    IsMode = True
     joyx = int(msg.x, 16) & 0xFF
     joyy = int(msg.y, 16) & 0xFF
     priorspeedrange = 0
@@ -106,7 +108,13 @@ def callback_for_msg(msg):
             print ()
             #cansend(cansocket, "0C040101#")  #horn off
         if msg.event[2:4] == 'h1':
-            cansendArr(cansocket, change_mode)
+            if IsMode:
+                cansendArr(cansocket, change_mode)
+                IsMode = False
+            else:
+                cansendArr(cansocket, change_mode_back)
+                IsMode = True
+
             #cansend(cansocket,"0C040100#")  #horn on
         if msg.event[2:4] == 'h2':
             cansendArr(cansocket, change_mode_back)
