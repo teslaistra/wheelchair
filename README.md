@@ -1,4 +1,5 @@
 # wheelchair
+More detailed about this project: https://telegra.ph/Learning-to-Control-Electric-Wheelchair-with-ROS-via-Standard-CAN-bus-07-29
 Source project is a https://github.com/redragonx/can2RNET
 This package contains 3 nodes:
   pi_node and master_node to control wheelchair via canbus
